@@ -34,7 +34,6 @@ PROJECT_APPS = ["core"]
 
 THIRD_PARTY_APPS = [
     "rest_framework",
-    "phonenumber_field",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -117,6 +116,3 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Phone Number Field
-PHONENUMBER_DB_FORMAT = "E164"

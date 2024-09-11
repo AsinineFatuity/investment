@@ -4,7 +4,6 @@ import core.models.user
 import django.contrib.auth.models
 import django.utils.timezone
 import enumchoicefield.fields
-import phonenumber_field.modelfields
 import uuid
 from django.db import migrations, models
 
@@ -111,12 +110,6 @@ class Migration(migrations.Migration):
                         default=core.models.user.RolesEnum["USER"],
                         enum_class=core.models.user.RolesEnum,
                         max_length=5,
-                    ),
-                ),
-                (
-                    "phone_number",
-                    phonenumber_field.modelfields.PhoneNumberField(
-                        default="", max_length=128, region=None
                     ),
                 ),
                 (
