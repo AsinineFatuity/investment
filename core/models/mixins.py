@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 from django.utils import timezone
+from enum import Enum
+from enumchoicefield import EnumChoiceField
 
 
 class PublicIdentifier(models.Model):
@@ -20,4 +22,21 @@ class AuditTimeStamp(models.Model):
 
 class AbstractBase(AuditTimeStamp, PublicIdentifier):
     class Meta:
+        abstract = True
+
+
+class TransactionTypeEnum(Enum):
+    D = "DEPOSIT"
+    W = "WITHDRAWAL"
+
+
+class AccountTransaction(AbstractBase):
+
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    type = EnumChoiceField(TransactionTypeEnum)
+    transaction_ts = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Account Transaction"
+        verbose_name_plural = "Account Transactions"
         abstract = True
