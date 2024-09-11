@@ -19,3 +19,10 @@ This is a django rest framework backend api that simulates user's investment acc
        **NB**: *You may create the virtual environment folder inside the github local repo but you have to update the .gitignore to ignore the folder*
    2. Activate your virtual environment by running `source name_of_env/bin/activate`
    3. Install packages by running `pip install -r requirements.txt`
+4. To start the local host server run `python3 manage.py runserver`
+5. To run migrations run the command `python3 manage.py migrate`
+
+## To Run Unit Tests
+* The first time/whenever you have created new migrations run `python3 manage.py test`
+* Subsequently you run `python3 manage.py test --keepdb`
+* Find more arguments you can pass to django's test api [here](https://docs.djangoproject.com/en/5.0/topics/testing/overview/)
