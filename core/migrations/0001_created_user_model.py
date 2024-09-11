@@ -104,14 +104,6 @@ class Migration(migrations.Migration):
                     models.EmailField(db_index=True, max_length=254, unique=True),
                 ),
                 ("date_of_birth", models.DateField(blank=True, null=True)),
-                (
-                    "gender",
-                    enumchoicefield.fields.EnumChoiceField(
-                        default=core.models.user.GenderEnum["M"],
-                        enum_class=core.models.user.GenderEnum,
-                        max_length=1,
-                    ),
-                ),
                 ("address", models.CharField(blank=True, max_length=100, null=True)),
                 (
                     "role",

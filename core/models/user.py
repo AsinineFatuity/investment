@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from core.models.mixins import AbstractBase
 from enumchoicefield import EnumChoiceField
-from phonenumber_field.modelfields import PhoneNumberField
 
 
 class RolesEnum(Enum):
@@ -11,14 +10,7 @@ class RolesEnum(Enum):
     ADMIN = "ADMIN"
 
 
-class GenderEnum(Enum):
-    M = "MALE"
-    F = "FEMALE"
-
-
 class User(AbstractBase, AbstractUser):
-    # gender maps
-    GENDER_CHOICES_MAP = {GenderEnum.M: "Male", GenderEnum.F: "Female"}
     # role maps
     ROLE_CHOICES_MAP = {
         RolesEnum.USER: "User",
@@ -28,11 +20,7 @@ class User(AbstractBase, AbstractUser):
     REQUIRED_FIELDS = ["username"]
     username = models.CharField(db_index=True, max_length=100, unique=True)
     email = models.EmailField(db_index=True, unique=True)
-    date_of_birth = models.DateField(null=True, blank=True)
-    gender = EnumChoiceField(GenderEnum, default=GenderEnum.M)
-    address = models.CharField(max_length=100, null=True, blank=True)
     role = EnumChoiceField(RolesEnum, default=RolesEnum.USER)
-    phone_number = PhoneNumberField(default="")
 
     class Meta:
         verbose_name = "User"
