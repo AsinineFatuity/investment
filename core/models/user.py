@@ -8,7 +8,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class RolesEnum(Enum):
     USER = "USER"
-    HEALTH_CARE_PROVIDER = "HEALTH_CARE_PROVIDER"
     ADMIN = "ADMIN"
 
 
