@@ -8,6 +8,9 @@ django = "*"
 django-phonenumber-field = "*"
 django-enumchoicefield = "*"
 black = "*"
+djangorestframework = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
