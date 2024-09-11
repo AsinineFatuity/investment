@@ -37,6 +37,4 @@ class AccountTransaction(AbstractBase):
     transaction_ts = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        verbose_name = "Account Transaction"
-        verbose_name_plural = "Account Transactions"
         abstract = True
