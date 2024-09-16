@@ -3,7 +3,7 @@ from django.contrib.auth.models import Permission, Group
 from core.models import User
 
 
-class AccountPermissions:
+class CreatePermission:
     VIEW_ONLY_PERMISSIONS = [
         "view_viewonlytransaction",
     ]  # perms for ViewOnlyAccount

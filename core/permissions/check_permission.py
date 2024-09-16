@@ -6,7 +6,7 @@ from core.models import (
 )
 
 
-class CheckPermissions:
+class CheckPermission:
     # Define possible actions
     VIEW_ACTION = "view"
     ADD_ACTION = "add"
