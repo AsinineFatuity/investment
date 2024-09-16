@@ -4,6 +4,7 @@ from core.models.user import User
 
 
 class PostOnlyAccount(AbstractBase):
+    # Can only add transactions to this account
     users = models.ManyToManyField(User, related_name="post_only_accounts")
 
 

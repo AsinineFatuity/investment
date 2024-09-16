@@ -4,6 +4,7 @@ from core.models.user import User
 
 
 class AllPermAccount(AbstractBase):
+    # Can view, update, delete and add transactions to this account
     users = models.ManyToManyField(User, related_name="all_perm_accounts")
 
 
