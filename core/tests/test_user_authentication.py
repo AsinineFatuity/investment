@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
-from core.models import User
+from core.models.user import User, RolesEnum
 from core.permissions import CreatePermission
 
 
@@ -27,6 +27,8 @@ class TestUserAuthentication(TestCase):
         self.assertIsNotNone(response.data.get("refresh"))
         created_user = User.objects.get(email=self.data["email"])
         self.assertEqual(created_user.username, self.data["username"])
+        self.assertTrue(created_user.check_password(self.data["password"]))
+        self.assertTrue(created_user.is_active)
         self.assertEqual(
             created_user.groups.count(), len(CreatePermission.GRP_PERMS_MAP.keys())
         )
@@ -63,5 +65,5 @@ class TestUserAuthentication(TestCase):
         )
         self.assertEqual(
             response.data.get("user").get("role"),
-            User.ROLE_CHOICES_MAP.get(User.Role.USER),
+            User.ROLE_CHOICES_MAP.get(RolesEnum.USER),
         )

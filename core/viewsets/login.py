@@ -1,3 +1,5 @@
+import logging
+from traceback import print_exc
 from rest_framework.response import Response
 from django.http import HttpRequest
 from rest_framework.viewsets import ViewSet
@@ -18,5 +20,6 @@ class LoginViewSet(ViewSet):
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
+            logging.error(f"{__name__}: Error occurred while validating token")
             raise InvalidToken(e.args[0])
         return Response(serializer.validated_data, status=status.HTTP_200_OK)

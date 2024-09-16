@@ -20,6 +20,8 @@ class RegisterViewSet(ViewSet):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        user.set_password(request.data.get("password"))
+        user.save()
         CreatePermission(user).add_user_to_groups()
         refresh = RefreshToken.for_user(user)
         return Response(
