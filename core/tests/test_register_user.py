@@ -25,7 +25,9 @@ class TestRegisterUser(TestCase):
         self.assertIsNotNone(response.data.get("refresh"))
         created_user = User.objects.get(email=data["email"])
         self.assertEqual(created_user.username, data["username"])
-        self.assertEqual(created_user.groups.count(), 3)
+        self.assertEqual(
+            created_user.groups.count(), len(CreatePermission.GRP_PERMS_MAP.keys())
+        )
         user_permissions = created_user.get_all_permissions()
         self.assertNotEqual(user_permissions, set())
         expected_perms = set(
