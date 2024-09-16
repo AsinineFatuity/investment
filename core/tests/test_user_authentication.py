@@ -6,7 +6,7 @@ from core.models import User
 from core.permissions import CreatePermission
 
 
-class TestRegisterUser(TestCase):
+class TestUserAuthentication(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.register_url = reverse("register-list")
