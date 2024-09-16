@@ -3,5 +3,5 @@ from core.viewsets.register import RegisterViewSet
 
 router = routers.SimpleRouter()
 
-router.register(r"register", RegisterViewSet, basename="register")
+router.register(r"auth/register", RegisterViewSet, basename="register")
 urlpatterns = [*router.urls]
