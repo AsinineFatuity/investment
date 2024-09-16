@@ -3,6 +3,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
 from core.models import User
+from core.permissions import CreatePermission
 
 
 class TestRegisterUser(TestCase):
@@ -26,4 +27,11 @@ class TestRegisterUser(TestCase):
         self.assertEqual(created_user.username, data["username"])
         self.assertEqual(created_user.groups.count(), 3)
         user_permissions = created_user.get_all_permissions()
-        print(user_permissions)
+        self.assertNotEqual(user_permissions, set())
+        expected_perms = set(
+            [f"core.{perm}" for perm in CreatePermission.VIEW_ONLY_PERMISSIONS]
+            + [f"core.{perm}" for perm in CreatePermission.POST_ONLY_PERMISSIONS]
+            + [f"core.{perm}" for perm in CreatePermission.ALL_PERM_PERMISSIONS]
+        )
+        for perm in expected_perms:
+            self.assertIn(perm, user_permissions)
