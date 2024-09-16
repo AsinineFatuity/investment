@@ -9,21 +9,4 @@ class Migration(migrations.Migration):
         ("core", "0002_created_accounts_and_transactions"),
     ]
 
-    operations = [
-        migrations.RemoveField(
-            model_name="user",
-            name="address",
-        ),
-        migrations.RemoveField(
-            model_name="user",
-            name="date_of_birth",
-        ),
-        migrations.RemoveField(
-            model_name="user",
-            name="gender",
-        ),
-        migrations.RemoveField(
-            model_name="user",
-            name="phone_number",
-        ),
-    ]
+    operations = []
