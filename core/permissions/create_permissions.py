@@ -1,11 +1,6 @@
 from typing import List
 from django.contrib.auth.models import Permission, Group
-from core.models import (
-    User,
-    PostOnlyTransaction,
-    ViewOnlyTransaction,
-    AllPermTransaction,
-)
+from core.models import User
 
 
 class AccountPermissions:
