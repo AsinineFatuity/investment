@@ -1,3 +1,4 @@
+from typing import List
 from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
 from core.models import (
@@ -26,19 +27,35 @@ class AccountPermissions:
     ALL_PERM_GRP = "all_perm"
 
     def __init__(self, user: User):
-        self.view_only_group, self.post_only_group, self.all_perm_group = (
-            self.get_or_create_groups()
+        self._perm_created_grp_map = {
+            self.VIEW_ONLY_GRP: [False, None],
+            self.POST_ONLY_GRP: [False, None],
+            self.ALL_PERM_GRP: [False, None],
+        }
+        self._view_only_group, self._post_only_group, self._all_perm_group = (
+            self._get_or_create_groups()
         )
-        pass
+        for perm, (created, group) in self._perm_created_grp_map.items():
+            if created:
+                self._add_perm_to_groups(perm, group)
+        self._user = user
 
-    def get_or_create_groups(self):
-        view_only_group, created = Group.objects.get_or_create(name=self.VIEW_ONLY_GRP)
-        post_only_group, created = Group.objects.get_or_create(name=self.POST_ONLY_GRP)
-        all_perm_group, created = Group.objects.get_or_create(name=self.ALL_PERM_GRP)
+    def _get_or_create_groups(self):
+        view_only_group, view_created = Group.objects.get_or_create(
+            name=self.VIEW_ONLY_GRP
+        )
+        post_only_group, post_created = Group.objects.get_or_create(
+            name=self.POST_ONLY_GRP
+        )
+        all_perm_group, all_created = Group.objects.get_or_create(
+            name=self.ALL_PERM_GRP
+        )
+        self._perm_created_grp_map[self.VIEW_ONLY_GRP] = [view_created, view_only_group]
+        self._perm_created_grp_map[self.POST_ONLY_GRP] = [post_created, post_only_group]
+        self._perm_created_grp_map[self.ALL_PERM_GRP] = [all_created, all_perm_group]
         return view_only_group, post_only_group, all_perm_group
 
-    def add_perm_to_groups(self):
-        view_only_perms = Permission.objects.filter(
-            codename__in=self.VIEW_ONLY_PERMISSIONS
-        )
-        pass
+    @staticmethod
+    def _add_perm_to_groups(permissions: List[str], group: Group):
+        perms = Permission.objects.filter(codename__in=permissions)
+        group.permissions.add(*perms)
