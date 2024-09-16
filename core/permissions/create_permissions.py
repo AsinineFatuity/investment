@@ -24,17 +24,6 @@ class AccountPermissions:
     VIEW_ONLY_GRP = "view_only"
     POST_ONLY_GRP = "post_only"
     ALL_PERM_GRP = "all_perm"
-    # Define possible actions
-    VIEW_ACTION = "view"
-    ADD_ACTION = "add"
-    CHANGE_ACTION = "change"
-    DELETE_ACTION = "delete"
-    VALID_ACTIONS = [VIEW_ACTION, ADD_ACTION, CHANGE_ACTION, DELETE_ACTION]
-    VALID_MODELS = [
-        ViewOnlyTransaction.__name__.lower(),
-        PostOnlyTransaction.__name__.lower(),
-        AllPermTransaction.__name__.lower(),
-    ]
 
     def __init__(self, user: User):
         self._perm_created_grp_map = {
@@ -75,10 +64,3 @@ class AccountPermissions:
         for name, (created, group) in self._perm_created_grp_map.items():
             user_groups.append(group)
         self._user.groups.add(*user_groups)
-
-    def user_has_perm(self, action: str, model_name: str):
-        if action not in self.VALID_ACTIONS:
-            raise ValueError(f"Invalid action: {action}")
-        if model_name not in self.VALID_MODELS:
-            raise ValueError(f"Invalid model name: {model_name}")
-        return self._user.has_perm(f"core.{action}_{model_name}")
