@@ -59,3 +59,4 @@ class CreatePermission:
         for name, (created, group) in self._perm_created_grp_map.items():
             user_groups.append(group)
         self._user.groups.add(*user_groups)
+        self._user.save()
