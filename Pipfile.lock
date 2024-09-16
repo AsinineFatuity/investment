@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "32e96817af0696bc3e5643f15c3a1513e745e7083213092be538a3f63ed8b40c"
+            "sha256": "f0c3c84bea572cc620dd1e7e41265bbeb9b9e6599d3f4cae05caeeb3daac8471"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -94,6 +94,15 @@
             "markers": "python_version >= '3.8'",
             "version": "==3.15.2"
         },
+        "djangorestframework-simplejwt": {
+            "hashes": [
+                "sha256:381bc966aa46913905629d472cd72ad45faa265509764e20ffd440164c88d220",
+                "sha256:6c4bd37537440bc439564ebf7d6085e74c5411485197073f508ebdfa34bc9fae"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==5.3.1"
+        },
         "mypy-extensions": {
             "hashes": [
                 "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d",
@@ -120,11 +129,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:9e5e27a08aa095dd127b9f2e764d74254f482fef22b0970773bfba79d091ab8c",
-                "sha256:eb1c8582560b34ed4ba105009a4badf7f6f85768b30126f351328507b2beb617"
+                "sha256:50a5450e2e84f44539718293cbb1da0a0885c9d14adf21b77bae4e66fc99d9b5",
+                "sha256:d4e0b7d8ec176b341fb03cb11ca12d0276faa8c485f9cd218f613840463fc2c0"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.3.2"
+            "version": "==4.3.3"
         },
         "psycopg2-binary": {
             "hashes": [
@@ -204,6 +213,14 @@
             "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==2.9.9"
+        },
+        "pyjwt": {
+            "hashes": [
+                "sha256:3b02fb0f44517787776cf48f2ae25d8e14f300e6d7545a4315cee571a415e850",
+                "sha256:7e1e5b56cc735432a7369cbfa0efe50fa113ebecdc04ae6922deba8b84582d0c"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==2.9.0"
         },
         "python-decouple": {
             "hashes": [
