@@ -11,6 +11,7 @@ class TestUserAuthentication(TestCase):
         self.client = APIClient()
         self.register_url = reverse("register-list")
         self.login_url = reverse("login-list")
+        self.refresh_url = reverse("refresh-list")
         self.data = {
             "email": "test@yopmail.com",
             "username": "test",
@@ -20,7 +21,6 @@ class TestUserAuthentication(TestCase):
         }
 
     def test_register_user(self):
-
         response = self.client.post(self.register_url, self.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(response.data.get("access"))
@@ -67,3 +67,17 @@ class TestUserAuthentication(TestCase):
             response.data.get("user").get("role"),
             User.ROLE_CHOICES_MAP.get(RolesEnum.USER),
         )
+
+    def test_user_refresh_token(self):
+        response = self.client.post(self.register_url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        login_data = {
+            "email": self.data["email"],
+            "password": self.data["password"],
+        }
+        response = self.client.post(self.login_url, login_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        refresh_data = {"refresh": response.data.get("refresh")}
+        response = self.client.post(self.refresh_url, refresh_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(response.data.get("access"))
