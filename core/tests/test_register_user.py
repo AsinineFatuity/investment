@@ -24,3 +24,6 @@ class TestRegisterUser(TestCase):
         self.assertIsNotNone(response.data.get("refresh"))
         created_user = User.objects.get(email=data["email"])
         self.assertEqual(created_user.username, data["username"])
+        self.assertEqual(created_user.groups.count(), 3)
+        user_permissions = created_user.get_all_permissions()
+        print(user_permissions)

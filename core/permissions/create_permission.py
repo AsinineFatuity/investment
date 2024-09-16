@@ -20,6 +20,12 @@ class CreatePermission:
     POST_ONLY_GRP = "post_only"
     ALL_PERM_GRP = "all_perm"
 
+    GRP_PERMS_MAP = {
+        VIEW_ONLY_GRP: VIEW_ONLY_PERMISSIONS,
+        POST_ONLY_GRP: POST_ONLY_PERMISSIONS,
+        ALL_PERM_GRP: ALL_PERM_PERMISSIONS,
+    }
+
     def __init__(self, user: User):
         self._perm_created_grp_map = {
             self.VIEW_ONLY_GRP: [False, None],
@@ -29,9 +35,9 @@ class CreatePermission:
         self._view_only_group, self._post_only_group, self._all_perm_group = (
             self._get_or_create_groups()
         )
-        for perm, (created, group) in self._perm_created_grp_map.items():
+        for grp_name, (created, grp_obj) in self._perm_created_grp_map.items():
             if created:
-                self._add_perm_to_groups(perm, group)
+                self._add_perm_to_groups(self.GRP_PERMS_MAP[grp_name], grp_obj)
         self._user = user
 
     def _get_or_create_groups(self):
@@ -59,4 +65,3 @@ class CreatePermission:
         for name, (created, group) in self._perm_created_grp_map.items():
             user_groups.append(group)
         self._user.groups.add(*user_groups)
-        self._user.save()
