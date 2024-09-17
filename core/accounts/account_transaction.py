@@ -28,7 +28,7 @@ class AccountTransaction:
             user=self._user,
             amount=self._amount,
             date=self._date,
-            transaction_type=self._transaction_type,
+            type=self._transaction_type,
         )
         transaction.save()
         return transaction
@@ -36,6 +36,7 @@ class AccountTransaction:
     def update_transaction(self):
         self._transaction_obj.amount = self._amount
         self._transaction_obj.date = self._date
+        self._transaction_obj.type = self._transaction_type
         self._transaction_obj.save()
         return self._transaction_obj
 
