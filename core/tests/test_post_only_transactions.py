@@ -9,7 +9,7 @@ class TestViewOnlyTransaction(CustomTestCase):
         super().setUp()
         self.post_only_transaction_url = reverse("post-only-list")
 
-    def test_post_post_only_transaction(self):
+    def test_create_post_only_transaction(self):
         data = {"amount": 1000, "date": "2024-09-01", "type": "D"}
         response = self.client.post(self.post_only_transaction_url, data=data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

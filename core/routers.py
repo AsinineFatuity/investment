@@ -5,6 +5,7 @@ from core.viewsets import (
     RefreshViewSet,
     ViewOnlyTransactionViewSet,
     PostOnlyTransactionViewSet,
+    AllPermTransactionViewSet,
 )
 
 router = routers.SimpleRouter()
@@ -18,4 +19,5 @@ router.register(
 router.register(
     r"transaction/post-only", PostOnlyTransactionViewSet, basename="post-only"
 )
+router.register(r"transaction/all-perm", AllPermTransactionViewSet, basename="all-perm")
 urlpatterns = [*router.urls]
