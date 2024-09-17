@@ -1,2 +1,2 @@
 from core.permissions.create_permission import CreatePermission
-from core.permissions.check_permission import PermChecker
+from core.permissions.perm_checker import PermChecker

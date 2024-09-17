@@ -4,11 +4,11 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from core.permissions import PermChecker
-from core.serializers import PostOnlyTransactionSerializer
+from core.serializers import AllPermTransactionSerializer
 from core.models import PostOnlyAccount
 
 
-class PostOnlyTransactionViewSet(ViewSet):
+class AllPermTransactionViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
     http_method_names = ["get", "post"]
     authentication_classes = []
@@ -25,7 +25,7 @@ class PostOnlyTransactionViewSet(ViewSet):
             )
 
     def create(self, request: HttpRequest):
-        serializer = PostOnlyTransactionSerializer(data=request.data)
+        serializer = AllPermTransactionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         account_id = PostOnlyAccount.objects.first().id
         serializer.save(account_id=account_id, user=request.user)
