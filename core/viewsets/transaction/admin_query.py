@@ -21,11 +21,20 @@ class AdminQueryTransactionViewSet(ViewSet):
     http_method_names = ["get"]
     authentication_classes = [JWTAuthentication]
 
-    def list(self, request: HttpRequest, user_id=None, start_date=None, end_date=None):
+    def list(
+        self,
+        request: HttpRequest,
+        user_id=None,
+        start_date=None,
+        end_date=None,
+        **kwargs
+    ):
+        print(kwargs)
+        print("user_id", user_id)
         # get transactions for a specific user
-        all_perm_transactions = AllPermTransaction.objects.filter(user_id=user_id)
-        post_only_transactions = PostOnlyTransaction.objects.filter(user_id=user_id)
-        view_only_transactions = ViewOnlyTransaction.objects.filter(user_id=user_id)
+        all_perm_transactions = AllPermTransaction.objects.all()
+        post_only_transactions = PostOnlyTransaction.objects.all()
+        view_only_transactions = ViewOnlyTransaction.objects.all()
         if start_date:
             all_perm_transactions = all_perm_transactions.filter(date__gte=start_date)
             post_only_transactions = post_only_transactions.filter(date__gte=start_date)
@@ -36,6 +45,30 @@ class AdminQueryTransactionViewSet(ViewSet):
             view_only_transactions = view_only_transactions.filter(date__lte=end_date)
         # calculate balances for each account type
         all_perm_balance = all_perm_transactions.aggregate(
+            all_deposits=Coalesce(
+                Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
+                Value(0),
+                output_field=DecimalField(),
+            ),
+            all_withdrawals=Coalesce(
+                Sum(Case(When(type=TransactionTypeEnum.W, then="amount"))),
+                Value(0),
+                output_field=DecimalField(),
+            ),
+        )
+        post_only_balance = post_only_transactions.aggregate(
+            all_deposits=Coalesce(
+                Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
+                Value(0),
+                output_field=DecimalField(),
+            ),
+            all_withdrawals=Coalesce(
+                Sum(Case(When(type=TransactionTypeEnum.W, then="amount"))),
+                Value(0),
+                output_field=DecimalField(),
+            ),
+        )
+        view_only_balance = view_only_transactions.aggregate(
             all_deposits=Coalesce(
                 Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
                 Value(0),
@@ -60,6 +93,10 @@ class AdminQueryTransactionViewSet(ViewSet):
             {
                 "all_perm_balance": all_perm_balance["all_deposits"]
                 - all_perm_balance["all_withdrawals"],
+                "post_only_balance": post_only_balance["all_deposits"]
+                - post_only_balance["all_withdrawals"],
+                "view_only_balance": view_only_balance["all_deposits"]
+                - view_only_balance["all_withdrawals"],
                 "all_perm_transactions": all_perm_serializer.data,
                 "post_only_transactions": post_only_serializer.data,
                 "view_only_transactions": view_only_serializer.data,

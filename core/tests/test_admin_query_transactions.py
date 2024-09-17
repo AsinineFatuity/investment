@@ -3,7 +3,6 @@ from rest_framework import status
 from core.tests.fixtures.custom_test_case import CustomTestCase
 from core.models import (
     PostOnlyTransaction,
-    ViewOnlyTransaction,
     AllPermTransaction,
     PostOnlyAccount,
     ViewOnlyAccount,
@@ -19,7 +18,6 @@ class TestAdminQueryTransactions(CustomTestCase):
         super().setUp()
         self.admin_query_transaction_url = reverse("admin-query-list")
         self.post_only_account = PostOnlyAccount.objects.first()
-        self.view_only_account = ViewOnlyAccount.objects.first()
         self.all_perm_account = AllPermAccount.objects.first()
         self.create_transaction_data()
 
@@ -38,20 +36,15 @@ class TestAdminQueryTransactions(CustomTestCase):
         }
         all_account_data = [withdrawal_data, deposit_data]
         post_to_create = []
-        view_to_create = []
         all_to_create = []
         for data in all_account_data:
             post_to_create.append(
                 PostOnlyTransaction(account=self.post_only_account, **data)
             )
-            view_to_create.append(
-                ViewOnlyTransaction(account=self.view_only_account, **data)
-            )
             all_to_create.append(
                 AllPermTransaction(account=self.all_perm_account, **data)
             )
         PostOnlyTransaction.objects.bulk_create(post_to_create)
-        ViewOnlyTransaction.objects.bulk_create(view_to_create)
         AllPermTransaction.objects.bulk_create(all_to_create)
 
     def test_non_admin_user_cannot_query_transactions(self):
@@ -67,6 +60,11 @@ class TestAdminQueryTransactions(CustomTestCase):
         self.user.is_staff = True
         self.user.role = RolesEnum.ADMIN
         self.user.save()
-        response = self.client.get(self.admin_query_transaction_url)
+        query_params = {
+            "user_id": self.user.id,
+        }
+        response = self.client.get(
+            reverse("admin-query-list"), {"user_id": self.user.id}
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         print(response.data)
