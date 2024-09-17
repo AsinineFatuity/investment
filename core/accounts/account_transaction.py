@@ -4,13 +4,6 @@ from core.models import User, AllPermTransaction, PostOnlyTransaction
 
 
 class AccountTransaction:
-    ALL_PERM_TRANSACTION_TYPE = AllPermTransaction.__name__.lower()
-    POST_ONLY_TRANSACTION_TYPE = PostOnlyTransaction.__name__.lower()
-    TRANSACTION_TYPE_OBJECT_MAP = {
-        ALL_PERM_TRANSACTION_TYPE: AllPermTransaction,
-        POST_ONLY_TRANSACTION_TYPE: PostOnlyTransaction,
-    }
-
     def __init__(
         self,
         user: User,
