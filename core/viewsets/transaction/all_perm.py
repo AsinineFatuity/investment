@@ -3,14 +3,14 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from core.permissions import PermChecker
+from core.permissions import PermChecker, HasAllTransactionPerm
 from core.serializers import AllPermTransactionSerializer
 from core.models import PostOnlyAccount
 
 
 class AllPermTransactionViewSet(ViewSet):
-    permission_classes = [IsAuthenticated]
-    http_method_names = ["get", "post"]
+    permission_classes = [IsAuthenticated, HasAllTransactionPerm]
+    http_method_names = ["get", "post", "delete", "put"]
     authentication_classes = []
 
     def list(self, request: HttpRequest):

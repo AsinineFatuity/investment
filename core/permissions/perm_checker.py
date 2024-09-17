@@ -1,3 +1,5 @@
+from rest_framework.permissions import BasePermission
+from django.http import HttpRequest
 from core.models import (
     ViewOnlyTransaction,
     PostOnlyTransaction,
@@ -32,3 +34,16 @@ class PermChecker:
         if model_name not in self.VALID_MODELS:
             raise ValueError(f"Invalid model name: {model_name}")
         return self._user.has_perm(f"core.{action}_{model_name}")
+
+
+class HasAllTransactionPerm(BasePermission):
+    def has_permission(self, request: HttpRequest, view):
+        perm_checker = PermChecker(request.user)
+        user_has_perms = []
+        for action in PermChecker.VALID_ACTIONS:
+            user_has_perms.append(
+                perm_checker.user_has_perm(
+                    action, PermChecker.ALL_PERM_TRANSACTION_MODEL
+                )
+            )
+        return all(user_has_perms)
