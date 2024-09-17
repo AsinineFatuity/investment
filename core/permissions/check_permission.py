@@ -13,10 +13,14 @@ class CheckPermission:
     CHANGE_ACTION = "change"
     DELETE_ACTION = "delete"
     VALID_ACTIONS = [VIEW_ACTION, ADD_ACTION, CHANGE_ACTION, DELETE_ACTION]
+    # valid model names
+    VIEW_ONLY_TRANSACTION_MODEL = ViewOnlyTransaction.__name__.lower()
+    POST_ONLY_TRANSACTION_MODEL = PostOnlyTransaction.__name__.lower()
+    ALL_PERM_TRANSACTION_MODEL = AllPermTransaction.__name__.lower()
     VALID_MODELS = [
-        ViewOnlyTransaction.__name__.lower(),
-        PostOnlyTransaction.__name__.lower(),
-        AllPermTransaction.__name__.lower(),
+        VIEW_ONLY_TRANSACTION_MODEL,
+        POST_ONLY_TRANSACTION_MODEL,
+        ALL_PERM_TRANSACTION_MODEL,
     ]
 
     def __init__(self, user: User):
