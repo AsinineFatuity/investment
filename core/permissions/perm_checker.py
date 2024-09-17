@@ -4,8 +4,8 @@ from core.models import (
     ViewOnlyTransaction,
     PostOnlyTransaction,
     AllPermTransaction,
-    User,
 )
+from core.models.user import User, RolesEnum
 
 
 class PermChecker:
@@ -47,3 +47,9 @@ class HasAllTransactionPerm(BasePermission):
                 )
             )
         return all(user_has_perms)
+
+
+class IsUserAdmin(BasePermission):
+    def has_permission(self, request: HttpRequest, view):
+        user = request.user
+        return user.role == RolesEnum.ADMIN and user.is_staff
