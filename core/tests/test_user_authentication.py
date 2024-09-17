@@ -4,6 +4,7 @@ from rest_framework import status
 from django.urls import reverse
 from core.models.user import User, RolesEnum
 from core.permissions import CreatePermission
+from core.models import AllPermAccount, PostOnlyAccount, ViewOnlyAccount
 
 
 class TestUserAuthentication(TestCase):
@@ -29,6 +30,7 @@ class TestUserAuthentication(TestCase):
         self.assertEqual(created_user.username, self.data["username"])
         self.assertTrue(created_user.check_password(self.data["password"]))
         self.assertTrue(created_user.is_active)
+        # test user permissions created successfully
         self.assertEqual(
             created_user.groups.count(), len(CreatePermission.GRP_PERMS_MAP.keys())
         )
@@ -41,6 +43,21 @@ class TestUserAuthentication(TestCase):
         )
         for perm in expected_perms:
             self.assertIn(perm, user_permissions)
+        # test user added to investment accounts successfully
+        perm_accounts = AllPermAccount.objects.all()
+        self.assertEqual(perm_accounts.count(), 1)
+        post_only_accounts = PostOnlyAccount.objects.all()
+        self.assertEqual(post_only_accounts.count(), 1)
+        view_only_accounts = ViewOnlyAccount.objects.all()
+        self.assertEqual(view_only_accounts.count(), 1)
+        all_accounts = [
+            perm_accounts.first(),
+            post_only_accounts.first(),
+            view_only_accounts.first(),
+        ]
+        for account in all_accounts:
+            self.assertEqual(account.users.count(), 1)
+            self.assertEqual(account.users.first().email, self.data["email"])
 
     def test_user_login(self):
         response = self.client.post(self.register_url, self.data)
