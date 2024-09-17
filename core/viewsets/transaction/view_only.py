@@ -11,6 +11,7 @@ from core.models import ViewOnlyTransaction
 class ViewOnlyTransactionViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
     http_method_names = ["get"]
+    authentication_classes = []
 
     def list(self, request: HttpRequest):
         user_transactions = ViewOnlyTransaction.objects.filter(user=request.user)
