@@ -1,5 +1,5 @@
 from django.http import HttpRequest
-from django.db.models import Sum, Case, When, Value
+from django.db.models import Sum, Case, When, Value, DecimalField
 from django.db.models.functions import Coalesce
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
@@ -13,6 +13,7 @@ from core.serializers import (
     ViewOnlyTransactionSerializer,
 )
 from core.models import AllPermTransaction, PostOnlyTransaction, ViewOnlyTransaction
+from core.models.mixins import TransactionTypeEnum
 
 
 class AdminQueryTransactionViewSet(ViewSet):
@@ -35,9 +36,15 @@ class AdminQueryTransactionViewSet(ViewSet):
             view_only_transactions = view_only_transactions.filter(date__lte=end_date)
         # calculate balances for each account type
         all_perm_balance = all_perm_transactions.aggregate(
-            all_deposits=Coalesce(Sum(Case(When(type="D", then="amount"))), Value(0)),
+            all_deposits=Coalesce(
+                Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
+                Value(0),
+                output_field=DecimalField(),
+            ),
             all_withdrawals=Coalesce(
-                Sum(Case(When(type="W", then="amount"))), Value(0)
+                Sum(Case(When(type=TransactionTypeEnum.W, then="amount"))),
+                Value(0),
+                output_field=DecimalField(),
             ),
         )
         all_perm_serializer = AllPermTransactionSerializer(
