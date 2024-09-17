@@ -23,14 +23,13 @@ class AccountTransaction:
         self._transaction_obj = transaction_obj
 
     def create_transaction(self):
-        transaction = self._transaction_cls(
+        transaction = self._transaction_cls.objects.create(
             account_id=self._account_id,
             user=self._user,
             amount=self._amount,
             date=self._date,
             type=self._transaction_type,
         )
-        transaction.save()
         return transaction
 
     def update_transaction(self):
