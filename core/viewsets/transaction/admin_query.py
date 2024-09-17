@@ -20,11 +20,19 @@ class AdminQueryTransactionViewSet(ViewSet):
     http_method_names = ["get"]
     authentication_classes = [JWTAuthentication]
 
-    def list(self, request: HttpRequest, user_id=None):
+    def list(self, request: HttpRequest, user_id=None, start_date=None, end_date=None):
         # get transactions for a specific user
         all_perm_transactions = AllPermTransaction.objects.filter(user_id=user_id)
         post_only_transactions = PostOnlyTransaction.objects.filter(user_id=user_id)
         view_only_transactions = ViewOnlyTransaction.objects.filter(user_id=user_id)
+        if start_date:
+            all_perm_transactions = all_perm_transactions.filter(date__gte=start_date)
+            post_only_transactions = post_only_transactions.filter(date__gte=start_date)
+            view_only_transactions = view_only_transactions.filter(date__gte=start_date)
+        if end_date:
+            all_perm_transactions = all_perm_transactions.filter(date__lte=end_date)
+            post_only_transactions = post_only_transactions.filter(date__lte=end_date)
+            view_only_transactions = view_only_transactions.filter(date__lte=end_date)
         # calculate balances for each account type
         all_perm_balance = all_perm_transactions.aggregate(
             all_deposits=Coalesce(Sum(Case(When(type="D", then="amount"))), Value(0)),
