@@ -44,42 +44,34 @@ class AdminQueryTransactionViewSet(ViewSet):
             post_only_transactions = post_only_transactions.filter(date__lte=end_date)
             view_only_transactions = view_only_transactions.filter(date__lte=end_date)
         # calculate balances for each account type
-        all_perm_balance = all_perm_transactions.aggregate(
-            all_deposits=Coalesce(
-                Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
-                Value(0),
-                output_field=DecimalField(),
-            ),
-            all_withdrawals=Coalesce(
-                Sum(Case(When(type=TransactionTypeEnum.W, then="amount"))),
-                Value(0),
-                output_field=DecimalField(),
-            ),
-        )
-        post_only_balance = post_only_transactions.aggregate(
-            all_deposits=Coalesce(
-                Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
-                Value(0),
-                output_field=DecimalField(),
-            ),
-            all_withdrawals=Coalesce(
-                Sum(Case(When(type=TransactionTypeEnum.W, then="amount"))),
-                Value(0),
-                output_field=DecimalField(),
-            ),
-        )
-        view_only_balance = view_only_transactions.aggregate(
-            all_deposits=Coalesce(
-                Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
-                Value(0),
-                output_field=DecimalField(),
-            ),
-            all_withdrawals=Coalesce(
-                Sum(Case(When(type=TransactionTypeEnum.W, then="amount"))),
-                Value(0),
-                output_field=DecimalField(),
-            ),
-        )
+        balances_transactions_map = {
+            "all_perm_balance": all_perm_transactions,
+            "post_only_balance": post_only_transactions,
+            "view_only_balance": view_only_transactions,
+        }
+        account_balances_map = {
+            "all_perm_balance": 0,
+            "post_only_balance": 0,
+            "view_only_balance": 0,
+        }
+        for account_type, transactions in balances_transactions_map.items():
+            balances_transactions_map[account_type] = transactions.aggregate(
+                all_deposits=Coalesce(
+                    Sum(Case(When(type=TransactionTypeEnum.D, then="amount"))),
+                    Value(0),
+                    output_field=DecimalField(),
+                ),
+                all_withdrawals=Coalesce(
+                    Sum(Case(When(type=TransactionTypeEnum.W, then="amount"))),
+                    Value(0),
+                    output_field=DecimalField(),
+                ),
+            )
+            account_balances_map[account_type] = (
+                balances_transactions_map[account_type]["all_deposits"]
+                - balances_transactions_map[account_type]["all_withdrawals"]
+            )
+
         all_perm_serializer = AllPermTransactionSerializer(
             all_perm_transactions, many=True
         )
@@ -91,12 +83,7 @@ class AdminQueryTransactionViewSet(ViewSet):
         )
         return Response(
             {
-                "all_perm_balance": all_perm_balance["all_deposits"]
-                - all_perm_balance["all_withdrawals"],
-                "post_only_balance": post_only_balance["all_deposits"]
-                - post_only_balance["all_withdrawals"],
-                "view_only_balance": view_only_balance["all_deposits"]
-                - view_only_balance["all_withdrawals"],
+                **account_balances_map,
                 "all_perm_transactions": all_perm_serializer.data,
                 "post_only_transactions": post_only_serializer.data,
                 "view_only_transactions": view_only_serializer.data,
