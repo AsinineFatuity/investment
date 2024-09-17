@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from core.permissions import PermChecker, HasAllTransactionPerm
 from core.serializers import AllPermTransactionSerializer
-from core.models import PostOnlyAccount
+from core.models import AllPermAccount, AllPermTransaction
 
 
 class AllPermTransactionViewSet(ViewSet):
@@ -14,19 +14,20 @@ class AllPermTransactionViewSet(ViewSet):
     authentication_classes = []
 
     def list(self, request: HttpRequest):
-        perm_checker = PermChecker(request.user)
-        user_has_perm = perm_checker.user_has_perm(
-            PermChecker.VIEW_ACTION, PermChecker.POST_ONLY_TRANSACTION_MODEL
-        )
-        if not user_has_perm:
-            return Response(
-                {"detail": "You do not have permission to perform this action"},
-                status=status.HTTP_403_FORBIDDEN,
-            )
+        user_transactions = AllPermTransaction.objects.filter(user_id=request.user.id)
+        serializer = AllPermTransactionSerializer(user_transactions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request: HttpRequest, pk=None):
+        transaction = AllPermTransaction.objects.get(public_id=pk)
+        serializer = AllPermTransactionSerializer(transaction, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request: HttpRequest):
         serializer = AllPermTransactionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        account_id = PostOnlyAccount.objects.first().id
+        account_id = AllPermAccount.objects.first().id
         serializer.save(account_id=account_id, user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

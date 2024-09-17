@@ -2,6 +2,7 @@ from django.http import HttpRequest
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
 from core.permissions import PermChecker
 from core.serializers import ViewOnlyTransactionSerializer
@@ -11,7 +12,7 @@ from core.models import ViewOnlyTransaction
 class ViewOnlyTransactionViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
     http_method_names = ["get", "post"]
-    authentication_classes = []
+    authentication_classes = [JWTAuthentication]
 
     def list(self, request: HttpRequest):
         user_transactions = ViewOnlyTransaction.objects.filter(user=request.user)
