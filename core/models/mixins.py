@@ -34,7 +34,7 @@ class AccountTransaction(AbstractBase):
 
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     type = EnumChoiceField(TransactionTypeEnum)
-    transaction_ts = models.DateTimeField(default=timezone.now)
+    date = models.DateField(default=timezone.now)
 
     class Meta:
         abstract = True
