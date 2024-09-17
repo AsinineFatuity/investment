@@ -12,6 +12,12 @@ class AllPermTransaction(AccountTransaction):
     account = models.ForeignKey(
         AllPermAccount, on_delete=models.CASCADE, related_name="all_perm_transactions"
     )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="all_perm_user_transactions",
+        default=None,
+    )
 
     class Meta:
         verbose_name = "All Perm Transaction"

@@ -12,6 +12,12 @@ class PostOnlyTransaction(AccountTransaction):
     account = models.ForeignKey(
         PostOnlyAccount, on_delete=models.CASCADE, related_name="post_only_transactions"
     )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="post_only_user_transactions",
+        default=None,
+    )
 
     class Meta:
         verbose_name = "Post Only Transaction"
