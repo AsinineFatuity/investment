@@ -6,6 +6,7 @@ from core.viewsets import (
     ViewOnlyTransactionViewSet,
     PostOnlyTransactionViewSet,
     AllPermTransactionViewSet,
+    AdminQueryTransactionViewSet,
 )
 
 router = routers.SimpleRouter()
@@ -20,4 +21,7 @@ router.register(
     r"transaction/post-only", PostOnlyTransactionViewSet, basename="post-only"
 )
 router.register(r"transaction/all-perm", AllPermTransactionViewSet, basename="all-perm")
+router.register(
+    r"transaction/admin-query", AdminQueryTransactionViewSet, basename="admin-query"
+)
 urlpatterns = [*router.urls]

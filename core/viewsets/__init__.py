@@ -4,3 +4,4 @@ from core.viewsets.auth.refresh import RefreshViewSet
 from core.viewsets.transaction.view_only import ViewOnlyTransactionViewSet
 from core.viewsets.transaction.post_only import PostOnlyTransactionViewSet
 from core.viewsets.transaction.all_perm import AllPermTransactionViewSet
+from core.viewsets.transaction.admin_query import AdminQueryTransactionViewSet
