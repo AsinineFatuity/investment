@@ -1,5 +1,4 @@
 import logging
-from traceback import print_exc
 from rest_framework.response import Response
 from django.http import HttpRequest
 from rest_framework.viewsets import ViewSet
