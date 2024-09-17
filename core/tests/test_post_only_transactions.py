@@ -4,7 +4,7 @@ from core.tests.fixtures.custom_test_case import CustomTestCase
 from core.models import PostOnlyTransaction
 
 
-class TestViewOnlyTransaction(CustomTestCase):
+class TestPostOnlyTransaction(CustomTestCase):
     def setUp(self):
         super().setUp()
         self.post_only_transaction_url = reverse("post-only-list")
