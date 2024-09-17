@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from core.permissions import CheckPermission
+from core.permissions import PermChecker
 from core.serializers import ViewOnlyTransactionSerializer
 from core.models import ViewOnlyTransaction
 
@@ -19,9 +19,9 @@ class ViewOnlyTransactionViewSet(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request: HttpRequest):
-        perm_checker = CheckPermission(request.user)
+        perm_checker = PermChecker(request.user)
         user_has_perm = perm_checker.user_has_perm(
-            CheckPermission.ADD_ACTION, CheckPermission.VIEW_ONLY_TRANSACTION_MODEL
+            PermChecker.ADD_ACTION, PermChecker.VIEW_ONLY_TRANSACTION_MODEL
         )
         if not user_has_perm:
             return Response(
