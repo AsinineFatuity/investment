@@ -17,7 +17,7 @@ class PostOnlyTransactionViewSet(ViewSet):
     def list(self, request: HttpRequest):
         perm_checker = PermChecker(request.user)
         user_has_perm = perm_checker.user_has_perm(
-            PermChecker.ADD_ACTION, PermChecker.POST_ONLY_TRANSACTION_MODEL
+            PermChecker.VIEW_ACTION, PermChecker.POST_ONLY_TRANSACTION_MODEL
         )
         if not user_has_perm:
             return Response(
@@ -29,15 +29,5 @@ class PostOnlyTransactionViewSet(ViewSet):
         serializer = PostOnlyTransactionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         account_id = PostOnlyAccount.objects.first().id
-        # data = request.data
-        # account_transaction = AccountTransaction(
-        #     user=request.user,
-        #     account_id=account_id,
-        #     transaction_cls=PostOnlyTransaction,
-        #     amount=data.get("amount"),
-        #     date=data.get("date"),
-        #     transaction_type=data.get("transaction_type"),
-        # )
-        # account_transaction.create_transaction()
         serializer.save(account_id=account_id, user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
