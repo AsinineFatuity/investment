@@ -16,7 +16,9 @@ from django.test import tag
 class TestAdminQueryTransactions(CustomTestCase):
     def setUp(self):
         super().setUp()
-        self.admin_query_transaction_url = reverse("admin-query-list")
+        self.admin_query_transaction_url = reverse(
+            "admin-query", args=[str(self.user.public_id), "", ""]
+        )
         self.post_only_account = PostOnlyAccount.objects.first()
         self.all_perm_account = AllPermAccount.objects.first()
         self.create_transaction_data()
@@ -64,7 +66,7 @@ class TestAdminQueryTransactions(CustomTestCase):
             "user_id": self.user.id,
         }
         response = self.client.get(
-            reverse("admin-query-list"), {"user_id": self.user.id}
+            reverse("admin-query", args=[str(self.user.public_id), "", ""])
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         print(response.data)
