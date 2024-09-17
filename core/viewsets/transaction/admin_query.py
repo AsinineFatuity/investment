@@ -32,9 +32,15 @@ class AdminQueryTransactionViewSet(ViewSet):
         print(kwargs)
         print("user_id", user_id)
         # get transactions for a specific user
-        all_perm_transactions = AllPermTransaction.objects.all()
-        post_only_transactions = PostOnlyTransaction.objects.all()
-        view_only_transactions = ViewOnlyTransaction.objects.all()
+        all_perm_transactions = AllPermTransaction.objects.filter(
+            user__public_id=user_id
+        )
+        post_only_transactions = PostOnlyTransaction.objects.filter(
+            user__public_id=user_id
+        )
+        view_only_transactions = ViewOnlyTransaction.objects.filter(
+            user__public_id=user_id
+        )
         if start_date:
             all_perm_transactions = all_perm_transactions.filter(date__gte=start_date)
             post_only_transactions = post_only_transactions.filter(date__gte=start_date)
