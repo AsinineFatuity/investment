@@ -19,16 +19,16 @@ This is a django rest framework backend api that simulates user's investment acc
       * **NB**: *You may create the virtual environment folder inside the root project folder folder but you have to update the `.gitignore` file to ignore the folder*
    8. Activate your virtual environment by running `source name_of_env/bin/activate` or system equivalent
    9. Install packages by running `pip install -r requirements.txt`
-4. To start the local host server run `python3 manage.py runserver`
-5. To run migrations run the command `python3 manage.py migrate`
+4. To start the local host server run `python manage.py runserver`
+5. To run migrations run the command `python manage.py migrate`
 
 ## To Run Unit Tests
-* The first time/whenever you have created new migrations run `python3 manage.py test`
-* Subsequently you run `python3 manage.py test --keepdb`
+* The first time/whenever you have created new migrations run ` manage.py test`
+* Subsequently you run `python manage.py test --keepdb`
 * Find more arguments you can pass to django's test api [here](https://docs.djangoproject.com/en/5.0/topics/testing/overview/)
 
 ## Additional Dev Notes
-### Code Quality
+### Code Quality (Linting)
 1. This project uses [black code formatter](https://black.readthedocs.io/en/stable/) to achieve consistency in formatting code in line with [PEP 8](https://peps.python.org/pep-0008/) standards
 2. Whenever changes are made to code, run `black .` to format the changed files
 3. This project also uses [flake8](https://pypi.org/project/flake8/) to enforce `PEP8` standards. Run `flake8` whenever you make changes to a file so as to detect non conformant code
