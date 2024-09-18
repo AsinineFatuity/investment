@@ -89,10 +89,18 @@ class AdminQueryTransactionViewSet(ViewSet):
         )
         return Response(
             {
-                **account_balances_map,
-                "all_perm_transactions": all_perm_serializer.data,
-                "post_only_transactions": post_only_serializer.data,
-                "view_only_transactions": view_only_serializer.data,
+                "all_perm_transactions": {
+                    "transactions": all_perm_serializer.data,
+                    "account_balance": account_balances_map["all_perm_balance"],
+                },
+                "post_only_transactions": {
+                    "transactions": post_only_serializer.data,
+                    "account_balance": account_balances_map["post_only_balance"],
+                },
+                "view_only_transactions": {
+                    "transactions": view_only_serializer.data,
+                    "account_balance": account_balances_map["view_only_balance"],
+                },
             },
             status=status.HTTP_200_OK,
         )
