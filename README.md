@@ -38,5 +38,5 @@ This is a django rest framework backend api that simulates user's investment acc
 ### Test Coverage
 1. This project uses [coverage](https://coverage.readthedocs.io/en/7.6.1/) to gauge effectiveness of tests
 2. To get a test coverage report:
-   * Run `coverage manage.py test --keepdb`
+   * Run `coverage run manage.py test --keepdb`
    * Generate report by running `coverage report`
