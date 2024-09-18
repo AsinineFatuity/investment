@@ -14,6 +14,7 @@ python-decouple = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
 flake8 = "*"
+coverage = "*"
 
 [dev-packages]
 

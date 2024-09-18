@@ -35,3 +35,8 @@ This is a django rest framework backend api that simulates user's investment acc
 ### Typehinting
 1. This project prefers type hinting as a way of documenting code hence always type hint your functions to improve readability
 2. As of the moment the project does not enforce types but this can be configured with the tools available
+### Test Coverage
+1. This project uses [coverage](https://coverage.readthedocs.io/en/7.6.1/) to gauge effectiveness of tests
+2. To get a test coverage report:
+   * Run `coverage manage.py test --keepdb`
+   * Generate report by running `coverage report`
