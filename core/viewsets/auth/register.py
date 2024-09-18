@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from core.serializers import RegisterSerializer
 from core.permissions import CreatePermission
+from core.accounts import InvestmentAccount
 
 
 class RegisterViewSet(ViewSet):
@@ -22,7 +23,10 @@ class RegisterViewSet(ViewSet):
         user = serializer.save()
         user.set_password(request.data.get("password"))
         user.save()
+        # create permission and add user to groups
         CreatePermission(user).add_user_to_groups()
+        # create and add user to investment accounts
+        InvestmentAccount(user).add_user_to_investment_accounts()
         refresh = RefreshToken.for_user(user)
         return Response(
             {

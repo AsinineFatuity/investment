@@ -12,6 +12,12 @@ class ViewOnlyTransaction(AccountTransaction):
     account = models.ForeignKey(
         ViewOnlyAccount, on_delete=models.CASCADE, related_name="view_only_transactions"
     )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="view_only_user_transactions",
+        default=None,
+    )
 
     class Meta:
         verbose_name = "View Only Transaction"
