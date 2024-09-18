@@ -63,16 +63,10 @@ class TestAdminQueryTransactions(CustomTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_get_admin_query_transaction_without_date_filter(self):
-        self.user.is_staff = True
-        self.user.role = RolesEnum.ADMIN
-        self.user.save()
-        query_params = {"start_date": "", "end_date": ""}
-        response = self.client.post(self.admin_query_transaction_url, query_params)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.data
+    def assertCorrectTransactionsDataReturned(
+        self, all_perm_trans_data, post_only_trans_data, view_only_trans_data
+    ):
         # assert all perm transaction data
-        all_perm_trans_data = data["all_perm_transactions"]
         self.assertEqual(
             len(all_perm_trans_data["transactions"]), self.total_all_perm_transactions
         )
@@ -80,7 +74,6 @@ class TestAdminQueryTransactions(CustomTestCase):
             all_perm_trans_data["account_balance"], self.expected_account_balance
         )
         # assert post only transaction data
-        post_only_trans_data = data["post_only_transactions"]
         self.assertEqual(
             len(post_only_trans_data["transactions"]), self.total_post_transactions
         )
@@ -88,13 +81,45 @@ class TestAdminQueryTransactions(CustomTestCase):
             post_only_trans_data["account_balance"], self.expected_account_balance
         )
         # assert view only transaction data
-        view_only_trans_data = data["view_only_transactions"]
         self.assertEqual(
             len(view_only_trans_data["transactions"]), self.total_view_only_transactions
         )
         self.assertEqual(view_only_trans_data["account_balance"], 0)
 
-    def test_get_admin_query_transaction_with_date_filter(self):
+    def test_get_admin_query_transaction_without_date_filter_expect_data(self):
+        self.user.is_staff = True
+        self.user.role = RolesEnum.ADMIN
+        self.user.save()
+        query_params = {"start_date": "", "end_date": ""}
+        response = self.client.post(self.admin_query_transaction_url, query_params)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.data
+        all_perm_trans_data = data["all_perm_transactions"]
+        post_only_trans_data = data["post_only_transactions"]
+        view_only_trans_data = data["view_only_transactions"]
+        self.assertCorrectTransactionsDataReturned(
+            all_perm_trans_data, post_only_trans_data, view_only_trans_data
+        )
+
+    def test_get_admin_query_transaction_with_date_filter_expect_data(self):
+        self.user.is_staff = True
+        self.user.role = RolesEnum.ADMIN
+        self.user.save()
+        query_params = {
+            "start_date": self.transaction_date,
+            "end_date": self.transaction_date,
+        }
+        response = self.client.post(self.admin_query_transaction_url, query_params)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.data
+        all_perm_trans_data = data["all_perm_transactions"]
+        post_only_trans_data = data["post_only_transactions"]
+        view_only_trans_data = data["view_only_transactions"]
+        self.assertCorrectTransactionsDataReturned(
+            all_perm_trans_data, post_only_trans_data, view_only_trans_data
+        )
+
+    def test_get_admin_query_transaction_with_date_filter_expect_no_data(self):
         self.user.is_staff = True
         self.user.role = RolesEnum.ADMIN
         self.user.save()
