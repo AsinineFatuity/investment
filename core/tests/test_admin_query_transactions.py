@@ -1,3 +1,4 @@
+from typing import Dict, Any
 from datetime import datetime, timedelta
 from django.urls import reverse
 from rest_framework import status
@@ -64,7 +65,10 @@ class TestAdminQueryTransactions(CustomTestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def assertCorrectTransactionsDataReturned(
-        self, all_perm_trans_data, post_only_trans_data, view_only_trans_data
+        self,
+        all_perm_trans_data: Dict[str, Any],
+        post_only_trans_data: Dict[str, Any],
+        view_only_trans_data: Dict[str, Any],
     ):
         # assert all perm transaction data
         self.assertEqual(
