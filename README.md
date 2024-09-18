@@ -28,7 +28,7 @@ This is a django rest framework backend api that simulates user's investment acc
 * Find more arguments you can pass to django's test api [here](https://docs.djangoproject.com/en/5.0/topics/testing/overview/)
 
 ## Additional Dev Notes
-### Code Formatting and Standards
+### Code Quality
 1. This project uses [black code formatter](https://black.readthedocs.io/en/stable/) to achieve consistency in formatting code in line with [PEP 8](https://peps.python.org/pep-0008/) standards
 2. Whenever changes are made to code, run `black .` to format the changed files
 3. This project also uses [flake8](https://pypi.org/project/flake8/) to enforce `PEP8` standards. Run `flake8` whenever you make changes to a file so as to detect non conformant code
