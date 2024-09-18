@@ -8,7 +8,7 @@ on:
 env:
   SECRET_KEY: "24y&=k$r#7l%^xl^#ctieplh+^lvs5!q(8zw-olsca4k+d4r_w"
   DEBUG: 0
-  DATABASE_URL: "postgres://postgres:pa55w0rd!@localhost:5432/investment"
+  DATABASE_URL: "postgres://postgres:pa55w0rd@localhost:5432/investment"
 jobs:
   build:
     runs-on: ubuntu-latest
