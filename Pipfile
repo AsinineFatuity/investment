@@ -13,6 +13,7 @@ psycopg2-binary = "*"
 python-decouple = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
+flake8 = "*"
 
 [dev-packages]
 

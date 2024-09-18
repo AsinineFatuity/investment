@@ -1,4 +1,3 @@
-from rest_framework import serializers
 from core.models import AllPermTransaction, PostOnlyTransaction, ViewOnlyTransaction
 from core.serializers.abstract import AbstractSerializer
 
