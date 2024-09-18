@@ -26,3 +26,9 @@ This is a django rest framework backend api that simulates user's investment acc
 * The first time/whenever you have created new migrations run `python3 manage.py test`
 * Subsequently you run `python3 manage.py test --keepdb`
 * Find more arguments you can pass to django's test api [here](https://docs.djangoproject.com/en/5.0/topics/testing/overview/)
+
+## Additional Dev Notes
+1. This project uses [black code formatter](https://black.readthedocs.io/en/stable/) to achieve consistency in formatting code
+2. Whenever changes are made to code, run `black .` to format the changed files
+3. This project prefers type hinting as a way of documenting code hence always type hint your functions to improve readability
+4. As of the moment the project does not enforce types but this can be configured with the tools available
