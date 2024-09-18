@@ -1,5 +1,4 @@
 from rest_framework import routers
-from django.urls import re_path
 from core.viewsets import (
     RegisterViewSet,
     LoginViewSet,
@@ -7,7 +6,7 @@ from core.viewsets import (
     ViewOnlyTransactionViewSet,
     PostOnlyTransactionViewSet,
     AllPermTransactionViewSet,
-    AdminQueryTransactionView,
+    AdminQueryTransactionViewSet,
 )
 
 router = routers.SimpleRouter()
@@ -22,12 +21,8 @@ router.register(
     r"transaction/post-only", PostOnlyTransactionViewSet, basename="post-only"
 )
 router.register(r"transaction/all-perm", AllPermTransactionViewSet, basename="all-perm")
+router.register(
+    r"transaction/admin-query", AdminQueryTransactionViewSet, basename="admin-query"
+)
 
 urlpatterns = [*router.urls]
-urlpatterns.append(
-    re_path(
-        r"^transaction/admin-query/(?P<user_id>[^/]+)(/(?P<start_date>[^/]+))?(/(?P<end_date>[^/]+))?/$",
-        AdminQueryTransactionView.as_view(),
-        name="admin-query",
-    ),
-)

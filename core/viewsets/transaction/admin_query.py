@@ -3,7 +3,7 @@ from django.db.models import Sum, Case, When, Value, DecimalField
 from django.db.models.functions import Coalesce
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-from rest_framework.views import APIView
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
@@ -17,18 +17,20 @@ from core.models import AllPermTransaction, PostOnlyTransaction, ViewOnlyTransac
 from core.models.mixins import TransactionTypeEnum
 
 
-class AdminQueryTransactionView(APIView):
+class AdminQueryTransactionViewSet(ViewSet):
     permission_classes = [IsAuthenticated, IsUserAdmin]
-    http_method_names = ["get"]
+    http_method_names = ["post"]
     authentication_classes = [JWTAuthentication]
+    lookup_field = "user_id"
 
-    def get(
+    @action(detail=True, methods=["post"])
+    def fetch_transactions(
         self,
         request: HttpRequest,
         user_id=None,
-        start_date=None,
-        end_date=None,
     ):
+        start_date = request.data["start_date"]
+        end_date = request.data["end_date"]
         # get transactions for a specific user
         all_perm_transactions = AllPermTransaction.objects.filter(
             user__public_id=user_id
