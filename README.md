@@ -22,11 +22,16 @@ This is a django rest framework backend api that simulates user's investment acc
 4. To start the local host server run `python manage.py runserver`
 5. To run migrations run the command `python manage.py migrate`
 
-## To Run Unit Tests
+## Unit Tests
+### Running Tests
 * The first time/whenever you have created new migrations run ` manage.py test`
 * Subsequently you run `python manage.py test --keepdb`
 * Find more arguments you can pass to django's test api [here](https://docs.djangoproject.com/en/5.0/topics/testing/overview/)
-
+### Test Coverage
+1. This project uses [coverage](https://coverage.readthedocs.io/en/7.6.1/) to gauge effectiveness of tests
+2. To get a test coverage report:
+   * Run `coverage run manage.py test --keepdb`
+   * Generate report by running `coverage report`
 ## Additional Dev Notes
 ### Code Quality (Linting)
 1. This project uses [black code formatter](https://black.readthedocs.io/en/stable/) to achieve consistency in formatting code in line with [PEP 8](https://peps.python.org/pep-0008/) standards
@@ -35,8 +40,3 @@ This is a django rest framework backend api that simulates user's investment acc
 ### Typehinting
 1. This project prefers type hinting as a way of documenting code hence always type hint your functions to improve readability
 2. As of the moment the project does not enforce types but this can be configured with the tools available
-### Test Coverage
-1. This project uses [coverage](https://coverage.readthedocs.io/en/7.6.1/) to gauge effectiveness of tests
-2. To get a test coverage report:
-   * Run `coverage run manage.py test --keepdb`
-   * Generate report by running `coverage report`
