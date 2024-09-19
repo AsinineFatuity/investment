@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "*" ]
 env:
   SECRET_KEY: "24y&=k$r#7l%^xl^#ctieplh+^lvs5!q(8zw-olsca4k+d4r_w"
   DEBUG: 0
